@@ -1,0 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+div.container {
+    width: 100%;
+    height: 100vh;
+}
+
+div.container textarea{
+    width: 100%;
+    height: 100vh;
+}
