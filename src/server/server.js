@@ -1,50 +1,80 @@
 const express = require('express');
-const { handle } = require('express/lib/application');
-const { title } = require('process');
-const pageModel = require('../models/page.model');
+const http = require('http');
+const Server = require('socket.io').Server;
 const PageModel = require('../models/page.model');
 
 const app = express();
-const server = require('http').createServer(app);
-const ws = require('socket.io')(server);
 
 var favicon = require('serve-favicon');
+const res = require('express/lib/response');
 app.use(favicon('assets/favicon.ico'));
-
 app.set("view engine", "ejs");
 app.set("views", "src/views");
 
-app.get('/', (req, res)=> {
+const serverHttp = http.createServer(app);
+const ws = new Server(serverHttp);
+
+app.get('/', (req, res) => {
     res.render('./home');
 })
-
+let page = [];
+let id = '';
 app.get('/:title', (req, res) => {
     const title = req.params.title;
-    console.log(title);
-    try{
-        PageModel.find({url: title}, (err, item) => {
-            if (err){
+    try {
+        PageModel.find({ url: title }, (err, item) => {
+            if (err) {
                 return handleError(err);
-            }else {
-                console.log(item);
-                if(item.length == 0){
-                    try{
-                        PageModel.create({url: title});
+            } else {
+                if (item.length == 0) {
+                    try {
+                        PageModel.create({ url: title, content: '' });
                         res.status(201);
-                    }catch (error){
+                    } catch (error) {
                         res.status(500).send(error.message);
                     }
+                }
+                if(item.length != 0){
+                    page = item;
+                    id = page[0].id;
+                }else{
+                    console.log('error')
                 }
             }
         });
         res.render('./page');
-        
         return res.status(200);
-    }catch(error){
+    } catch (error) {
         return res.status(500).send(error.message);
     }
-    });
+});
 
+ws.on("connection", socket => {
+    console.log(`socket connected: ${socket.id}`);
+
+    if(id !== ""){
+        PageModel.findById(id, (err, item) => {
+            if (err) {
+             console.log(err);
+            } else {
+                socket.emit('previousText', item.content);
+            }
+        });
+    }
+
+    socket.on('sendText', data => {
+        data = data.replace('undefined', '') //FIXME
+        PageModel.findByIdAndUpdate(id, { content: data }, (error, att) =>{
+            if(error){
+                console.log(error);
+                res.status(500);
+            }else{
+                res.status(200);
+            }
+        });
+        socket.broadcast.emit('receivedText', data);
+    });
+})
 
 const port = 3000;
-app.listen(port, () => console.log(`online server port ${port}`));
+serverHttp.listen(port, () => console.log(`server is running on port ${port}`));
