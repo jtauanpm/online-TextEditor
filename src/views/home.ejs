@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Editor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
+    <!--TODO: put style in separate file-->
+    <style>
+        div.container {
+            margin: 14%;
+            text-align: center;
+            font-family: sans-serif;
+            font-size: 24px;
+        }
+
+        h1{
+            font-size: 33px;
+            text-align: center;
+            margin-top: 4%;
+        }
+
+        .url {
+            margin-top: 10px;
+            font-size: 25px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Online Text Editor</h1>
+    <div class="container">
+        <label for="url">Type a URL: </label>
+        <br>
+        <input type="text" id="url" class="url" required>
+        <button type="submit" class="url">GO!</button>
+    </div>
+</body>
+</html>

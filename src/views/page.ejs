@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Editor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.js"></script>
+    <!--TODO: put style in separate file-->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        div.container {
+            width: 100%;
+            height: 100vh;
+        }
+
+        div.container textarea{
+            padding: 1%;
+            width: 100%;
+            height: 100vh;
+            font-size: 20px;
+            background-color: rgb(255, 245, 233);
+        }
+        div.container textarea:focus{
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <textarea spellcheck="false" placeholder="This page is clean. Type a text..."></textarea>
+    </div>
+    <!--TODO: put script in separate file-->
+    <script type="text/javascript">
+        const ws = io('http://localhost:3000');
+        const text = document.querySelector('textarea');
+        ws.on('previousText', data => {
+            text.value = data;
+        });
+
+        ws.on('receivedText', data => {
+            text.value = data;
+        });
+
+        text.addEventListener('input', e => {
+            const value = text.value;
+            ws.emit('sendText', value + e.key); //FIXME: see this sum
+        });
+    </script>
+</body>
+</html>

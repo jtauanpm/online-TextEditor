@@ -1,0 +1,31 @@
+{
+  "name": "online-texteditor",
+  "version": "1.0.0",
+  "description": "In-browser text editor application that allows sharing and saving of plain texts online.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jtauanpm/online-TextEditor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jtauanpm/online-TextEditor/issues"
+  },
+  "homepage": "https://github.com/jtauanpm/online-TextEditor#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "mongoose": "^6.3.4",
+    "serve-favicon": "^2.5.0",
+    "socket.io": "^4.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
