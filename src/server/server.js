@@ -29,16 +29,13 @@ app.get('/:title', (req, res) => {
                 if (item.length == 0) {
                     try {
                         PageModel.create({ url: title, content: '' });
+                        id = item[0].id;
                         res.status(201);
                     } catch (error) {
                         res.status(500).send(error.message);
                     }
-                }
-                if(item.length != 0){
-                    page = item;
-                    id = page[0].id;
                 }else{
-                    console.log('error')
+                    id = item[0].id;
                 }
             }
         });
